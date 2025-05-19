@@ -23,7 +23,7 @@ public class MainCLI {
 
   public static void main(String[] args) {
     HerstellerVerwaltung hv = new HerstellerVerwaltung();
-    KuchenAutomat ka = new KuchenAutomat(20, hv);
+    KuchenAutomat ka = new KuchenAutomat(3, hv);
     EventDispatcher eventDispatcher = new EventDispatcher();
     CreateCakeEventListener createCakeEventListener = new CreateCakeEventListener(ka);
     ReadCakeEventListener readCakeTypeEventListener = new ReadCakeEventListener(ka);
@@ -47,37 +47,5 @@ public class MainCLI {
     eventDispatcher.registerListener(DeleteHerstellerEvent.class, deleteHerstellerEventListener);
     CLI cli = new CLI(eventDispatcher, args);
     cli.run();
-
-    /*
-     * Manual:
-     * create Hersteller
-     * :c
-     * <HerstellerName>
-     * create Cake
-     * :c
-     * <As described in pdf>
-     * read
-     * Cakes by Type(only objects in array, no detailled output yet)
-     * :r
-     * kuchen <CakeType>(Kremkuchen, Obstkuchen, Obsttorte)
-     * All Cakes
-     * :r
-     * kuchen
-     * Hersteller
-     * :r
-     * hersteller
-     * Allergene(Not fully implemented yet, only array with all allergens in
-     * kuchenautomat)
-     * :r
-     * allergene
-     * update
-     * :u
-     * <location>
-     * delete
-     * :d
-     * <location>
-     * quit
-     * :q
-     */
   }
 }

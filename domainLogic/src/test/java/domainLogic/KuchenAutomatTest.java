@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import domainLogic.cake.CakeProduct;
+import domainLogic.cake.CakeType;
 import domainLogic.cake.KremkuchenImpl;
 import domainLogic.cake.parts.Krem;
 import domainLogic.cake.parts.Obst;
@@ -54,7 +55,7 @@ class KuchenAutomatTest {
     when(mockHerstellerVerwaltung.getHersteller("peter")).thenReturn(hersteller);
 
     KuchenAutomat kuchenAutomat = new KuchenAutomat(100, mockHerstellerVerwaltung);
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
     verify(mockHerstellerVerwaltung, times(1)).containsHersteller(hersteller);
@@ -62,7 +63,7 @@ class KuchenAutomatTest {
 
   @Test
   void deleteCallsRemoveOnKuchenAutomat() {
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
     KuchenAutomat mockedKuchenAutomat = mock(KuchenAutomat.class);
@@ -77,7 +78,7 @@ class KuchenAutomatTest {
     herstellerVerwaltung.addHersteller(hersteller);
     kuchenAutomat = new KuchenAutomat(100, herstellerVerwaltung);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
     assertEquals(1, kuchenAutomat.read().size());
   }
@@ -88,10 +89,10 @@ class KuchenAutomatTest {
     herstellerVerwaltung.addHersteller(hersteller);
     kuchenAutomat = new KuchenAutomat(100, herstellerVerwaltung);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
-    kuchenAutomat.create("Obstkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.OBSTKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         obst, null);
 
     ArrayList<CakeProduct> listToCompare = new ArrayList<>();
@@ -107,7 +108,7 @@ class KuchenAutomatTest {
     herstellerVerwaltung.addHersteller(hersteller);
     kuchenAutomat = new KuchenAutomat(100, herstellerVerwaltung);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
     kuchenAutomat.delete(1);
@@ -120,7 +121,7 @@ class KuchenAutomatTest {
     herstellerVerwaltung.addHersteller(hersteller);
     kuchenAutomat = new KuchenAutomat(100, herstellerVerwaltung);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
     Date now = Date.from(Instant.now());
@@ -139,13 +140,13 @@ class KuchenAutomatTest {
     herstellerVerwaltung.addHersteller(hersteller);
     kuchenAutomat = new KuchenAutomat(100, herstellerVerwaltung);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
-    kuchenAutomat.create("Obstkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.OBSTKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         obst, null);
 
-    kuchenAutomat.create("Obsttorte", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.OBSTTORTE, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         obst, krem);
 
     assertEquals(3, kuchenAutomat.read().size());
@@ -157,25 +158,25 @@ class KuchenAutomatTest {
     herstellerVerwaltung.addHersteller(hersteller);
     kuchenAutomat = new KuchenAutomat(100, herstellerVerwaltung);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         null, krem);
 
-    kuchenAutomat.create("Obstkuchen", hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
+    kuchenAutomat.create(CakeType.OBSTKUCHEN, hersteller, preis, naehrwert, allergens, standardHaltbarkeit,
         obst, null);
-    assertEquals(3, kuchenAutomat.read(KremkuchenImpl.class).size());
+    assertEquals(3, kuchenAutomat.read(CakeType.KREMKUCHEN).size());
   }
 
   @Test
   void testCapacity() {
     kuchenAutomat = new KuchenAutomat(10, herstellerVerwaltung);
     for (int i = 1; i <= 20; i++) {
-      kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens,
+      kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens,
           standardHaltbarkeit, null, krem);
     }
     assertEquals(10, kuchenAutomat.read().size());
@@ -183,7 +184,7 @@ class KuchenAutomatTest {
 
   @Test
   void testRemainingHaltbarkeit() {
-    kuchenAutomat.create("Kremkuchen", hersteller, preis, naehrwert, allergens,
+    kuchenAutomat.create(CakeType.KREMKUCHEN, hersteller, preis, naehrwert, allergens,
         Duration.ofMillis(10000), null, krem);
     try {
       Thread.sleep(1000);

@@ -29,6 +29,7 @@ public class CLI {
   private static final String CMD_UPDATE = ":u";
   private static final String CMD_DELETE = ":d";
   private static final String CMD_QUIT = ":q";
+  private static final String CMD_HELP = ":h";
 
   private static final String READ_KUCHEN = "kuchen";
   private static final String READ_HERSTELLER = "hersteller";
@@ -40,8 +41,8 @@ public class CLI {
   private static final int ARG_NAEHRWERT = 3;
   private static final int ARG_HALTBARKEIT = 4;
   private static final int ARG_ALLERGENE = 5;
-  private static final int ARG_OBST = 6;
-  private static final int ARG_KREM = 7;
+  private static final int ARG_FIRST_COMPONENT = 6;
+  private static final int ARG_SECOND_COMPONENT = 7;
 
   private static final int MIN_ARGS_CAKE_BASE = 6;
   private static final int MIN_ARGS_OBSTKUCHEN = MIN_ARGS_CAKE_BASE + 1;
@@ -95,18 +96,20 @@ public class CLI {
       CakeEventBuilder cakeEventBuilder = new CakeEventBuilder(this, cakeType, preis, allergene,
           naehrwert, haltbarkeit, hersteller);
 
-      if (cakeType.requiresObst()) {
-        cakeEventBuilder.obst(new Obst(args[ARG_OBST]));
-      }
-
-      if (cakeType.requiresKrem()) {
-        cakeEventBuilder.krem(new Krem(args[ARG_KREM]));
+      switch (cakeType) {
+        case OBSTKUCHEN -> cakeEventBuilder.obst(new Obst(args[ARG_FIRST_COMPONENT]));
+        case KREMKUCHEN -> cakeEventBuilder.krem(new Krem(args[ARG_FIRST_COMPONENT]));
+        case OBSTTORTE -> cakeEventBuilder
+            .obst(new Obst(args[ARG_FIRST_COMPONENT]))
+            .krem(new Krem(args[ARG_SECOND_COMPONENT]));
       }
 
       CreateCakeEvent createCakeEvent = cakeEventBuilder.build();
       this.eventDispatcher.dispatch(createCakeEvent);
       System.out.println(createCakeEvent.getResponse());
 
+    } catch (ArrayIndexOutOfBoundsException e) {
+      System.out.println("Missing required argument: " + e.getMessage());
     } catch (NumberFormatException e) {
       System.out.println("Invalid number format: " + e.getMessage());
     } catch (IllegalArgumentException e) {
@@ -216,13 +219,7 @@ public class CLI {
         printValidCakeTypes();
         return;
       }
-      String className = "domainLogic.cake." + cakeType.getDisplayName() + "Impl";
-      try {
-        readCakeEvent = new ReadCakeEvent(this, Class.forName(className));
-      } catch (ClassNotFoundException e) {
-        System.out.println("Error: Implementation class not found for " + cakeType.getDisplayName());
-        return;
-      }
+      readCakeEvent = new ReadCakeEvent(this, cakeType);
     } else {
       readCakeEvent = new ReadCakeEvent(this, null);
     }
@@ -293,14 +290,30 @@ public class CLI {
       System.out.print("Give Mode ");
       String mode = scanner.nextLine();
       switch (mode) {
-        case ":c" -> createMode();
-        case ":r" -> readMode();
-        case ":u" -> updateMode();
-        case ":d" -> deleteMode();
-        case ":q" -> {
+        case CMD_CREATE -> createMode();
+        case CMD_READ -> readMode();
+        case CMD_UPDATE -> updateMode();
+        case CMD_DELETE -> deleteMode();
+        case CMD_QUIT -> {
+          System.out.println("Goodbye!");
           return;
+        }
+        case CMD_HELP -> {
+          printHelp();
         }
       }
     }
+  }
+
+  private void printHelp() {
+    System.out.println("\n=== Cake Vending Machine CLI ===");
+    System.out.println("Available commands:");
+    System.out.println(CMD_CREATE + " - Create a manufacturer or cake");
+    System.out.println(CMD_READ + " - Read manufacturers, cakes or allergens");
+    System.out.println(CMD_UPDATE + " - Update (inspect) a cake");
+    System.out.println(CMD_DELETE + " - Delete a cake or manufacturer");
+    System.out.println(CMD_QUIT + " - Quit the application");
+    System.out.println(CMD_HELP + " - Display this help message");
+    System.out.println("===================================\n");
   }
 }

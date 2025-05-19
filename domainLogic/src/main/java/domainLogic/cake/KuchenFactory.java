@@ -8,12 +8,11 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import kuchen.Allergen;
-import verwaltung.Hersteller;
 
 public class KuchenFactory {
 
   public CakeProductMutable createCake(CakeType cakeType, BigDecimal preis,
-      HashSet<Allergen> allergene, Hersteller hersteller, int naehrwerte, Duration haltbarkeit,
+      HashSet<Allergen> allergene, int naehrwerte, Duration haltbarkeit,
       Obst obst, Krem krem) {
 
     Objects.requireNonNull(cakeType, "Cake type cannot be null");

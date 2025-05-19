@@ -1,14 +1,18 @@
 package events;
 
-public class ReadCakeEvent extends ResponseEvent{
+import domainLogic.cake.CakeType;
 
-  private final Class<?> kuchenSorte;
-  public ReadCakeEvent(Object source, Class<?> kuchenSorte) {
+public class ReadCakeEvent extends ResponseEvent {
+
+  private final CakeType cakeType;
+
+  public ReadCakeEvent(Object source, CakeType cakeType) {
     super(source);
-    this.kuchenSorte = kuchenSorte;
+    this.cakeType = cakeType;
   }
-  public Class<?> getKuchenSorte() {
-    return this.kuchenSorte;
+
+  public CakeType getKuchenSorte() {
+    return this.cakeType;
   }
 
 }
