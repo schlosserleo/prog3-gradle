@@ -22,4 +22,9 @@ public class KremkuchenImpl extends CakeProductImpl implements Kremkuchen {
   public String getKremsorte() {
     return this.krem.kremsorte();
   }
+
+  @Override
+  public CakeType getCakeType() {
+    return CakeType.KREMKUCHEN;
+  }
 }

@@ -29,4 +29,9 @@ public class ObsttorteImpl extends CakeProductImpl implements Obsttorte {
   public String getObstsorte() {
     return obst.obstsorte();
   }
+
+  @Override
+  public CakeType getCakeType() {
+    return CakeType.OBSTTORTE;
+  }
 }

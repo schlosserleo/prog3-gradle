@@ -7,5 +7,8 @@ import verwaltung.Verkaufsobjekt;
 
 public interface CakeProduct extends Kuchen, Verkaufsobjekt {
   Duration getRemainingHaltbarkeit();
+
   Date getCreationDate();
+
+  CakeType getCakeType();
 }

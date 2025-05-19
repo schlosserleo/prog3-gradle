@@ -21,4 +21,9 @@ public class ObstkuchenImpl extends CakeProductImpl implements Obstkuchen {
   public String getObstsorte() {
     return this.obst.obstsorte();
   }
+
+  @Override
+  public CakeType getCakeType() {
+    return CakeType.OBSTKUCHEN;
+  }
 }
